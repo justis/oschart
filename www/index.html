@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>oschart</title>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/smoothie.js"></script>
+<script>
+var server = io.connect('http://localhost:8080/osc/servers/8000'),
+	chart = new SmoothieChart(),
+	data = new TimeSeries();
+
+// Assumes every OSC message has a single, numeric value
+server.on('message', function(message) {
+  console.log(message[1]);
+	data.append(new Date().getTime(), message[1]);
+});
+
+function createTimeline() {
+	chart.addTimeSeries(data, { strokeStyle: 'rgba(0, 255, 0, 1)', fillStyle: 'rgba(0, 255, 0, 0.2)', lineWidth: 4 });
+	chart.streamTo(document.getElementById("chart"), 500);
+}
+</script>
+</head>
+<body onload="createTimeline()">
+<h1>oschart</h1>
+<canvas id="chart" width="400" height="100"></canvas>
+</body>
+</html>

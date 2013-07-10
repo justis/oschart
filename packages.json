@@ -1,0 +1,11 @@
+{
+  "name": "oschart",
+  "description": "charts OSC data",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "express": "3.x",
+		"osc.io": "0.0.3",
+		"smoothie": "1.17.x"
+  }
+}
