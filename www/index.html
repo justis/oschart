@@ -5,12 +5,15 @@
 <script src="/socket.io/socket.io.js"></script>
 <script src="/smoothie.js"></script>
 <script>
-var server = io.connect('http://localhost:8080/osc/servers/8000')
+var server = io.connect('/osc/servers/8000')
 	, chart = new SmoothieChart()
 	, x = new TimeSeries()
 	, y = new TimeSeries()
 	, z = new TimeSeries()
 	;
+
+//server.socket.on('connect_failed', function() { alert('could not connect to data stream'); });
+//server.socket.on('connect', function() { alert('connected'); });
 
 // Assumes every OSC message has 3 integers
 server.on('message', function(message) {
@@ -28,7 +31,6 @@ function createTimeline() {
 </script>
 </head>
 <body onload="createTimeline()">
-<h1>oschart</h1>
-<canvas id="chart" width="400" height="100"></canvas>
+<canvas id="chart" width="700" height="300"></canvas>
 </body>
 </html>
