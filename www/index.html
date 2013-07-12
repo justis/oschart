@@ -5,18 +5,24 @@
 <script src="/socket.io/socket.io.js"></script>
 <script src="/smoothie.js"></script>
 <script>
-var server = io.connect('http://localhost:8080/osc/servers/8000'),
-	chart = new SmoothieChart(),
-	data = new TimeSeries();
+var server = io.connect('http://localhost:8080/osc/servers/8000')
+	, chart = new SmoothieChart()
+	, x = new TimeSeries()
+	, y = new TimeSeries()
+	, z = new TimeSeries()
+	;
 
-// Assumes every OSC message has a single, numeric value
+// Assumes every OSC message has 3 integers
 server.on('message', function(message) {
-  console.log(message[1]);
-	data.append(new Date().getTime(), message[1]);
+	x.append(new Date().getTime(), message[1]);
+	y.append(new Date().getTime(), message[2]);
+	z.append(new Date().getTime(), message[3]);
 });
 
 function createTimeline() {
-	chart.addTimeSeries(data, { strokeStyle: 'rgba(0, 255, 0, 1)', fillStyle: 'rgba(0, 255, 0, 0.2)', lineWidth: 4 });
+	chart.addTimeSeries(x, { strokeStyle: 'rgba(0, 255, 0, 1)', fillStyle: 'rgba(0, 255, 0, 0.2)', lineWidth: 4 });
+	chart.addTimeSeries(y, { strokeStyle: 'rgba(255, 0, 0, 1)', fillStyle: 'rgba(255, 0, 0, 0.2)', lineWidth: 4 });
+	chart.addTimeSeries(z, { strokeStyle: 'rgba(0, 0, 255, 1)', fillStyle: 'rgba(0, 0, 255, 0.2)', lineWidth: 4 });
 	chart.streamTo(document.getElementById("chart"), 500);
 }
 </script>
